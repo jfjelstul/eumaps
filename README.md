@@ -47,17 +47,18 @@ The `geography` input, which needs to be an object of class `eumaps.geography` c
 
 The `palette` input, which needs to be an object of class `eumaps.palette` created by `create_palette()`, specifies a mapping between a continuous variable and a color ramp with a fixed number of colors. It also specifies the colors and labels to use for member states with missing data, for member states where the data is not applicable, and for non-member states. See the section below on creating a color palette for more details.
 
-The `theme` input, which needs to be an object of class `eumaps.theme` created by `create_theme()`, specifies the aesthetics of the map, including the style of the map border, the country borders, the title, the legend, and any insets. See the sectino below on creating a theme for more details. 
+The `theme` input, which needs to be an object of class `eumaps.theme` created by `create_theme()`, specifies the aesthetics of the map, including the style of the map border, the country borders, the title, the legend, and any insets. See the section below on creating a theme for more details. 
 
 The `eumaps` package makes it easy to customize the look of your map. The functions `create_geography()`, `create_palette()`, and `create_theme()` let you customize nearly every aspect of the map. 
 
-Here's an example that uses the default options. Only `create_palette()` requires you to choose some values. 
+Here's an example of a map with a diverging color palette that uses the default options. This example uses the `simulate_data()` function to randomly generate fake data. The colors are specified in an RGB format. Note that only `create_palette()` requires you to choose some values. 
 
 ```r
 # simulate data
 data <- simulate_data(
-  min = -1, 
-  max = 1
+  min = -1,
+  max = 1,
+  seed = 2468,
 )
 
 # make map
@@ -69,15 +70,15 @@ map <- make_map(
     value_min = -1,
     value_max = 1,
     count_colors = 8,
-    color_low = "#E74C3C",
-    color_high = "#3498DB",
-    color_mid = "#FFFFFF"
+    color_low = c(231, 76, 59),
+    color_high = c(53, 151, 219),
+    color_mid = c(255, 255, 255)
   ),
   theme = create_theme()
 )
 ```
 
-<img src="https://github.com/jfjelstul/eumaps/blob/master/examples/quick-start.png?raw=true" width="45%">
+<img src="https://github.com/jfjelstul/eumaps/blob/master/examples/quick-start.png?raw=true" width="75%">
 
 ## Creating the geography
 
@@ -88,9 +89,10 @@ The examples below use the following `palette` and `theme` objects. Germany is c
 ```r
 # simulate data
 data <- simulate_data(
-  min = -1, 
+  min = -1,
   max = 1,
-  missing = "Germany"
+  missing = "Germany",
+  seed = 2468
 )
 
 # create palette
@@ -100,9 +102,9 @@ palette <- create_palette(
   value_min = -1,
   value_max = 1,
   count_colors = 8,
-  color_low = "#E74C3C",
-  color_high = "#3498DB",
-  color_mid = "#FFFFFF"
+  color_low = c(231, 76, 59),
+  color_high = c(53, 151, 219),
+  color_mid = c(255, 255, 255)
 )
 
 # create theme
@@ -317,14 +319,14 @@ You can also use `create_palette()` to specify the colors to use for member stat
 
 These three colors only appear in the legend when applicable. In other words, `color_missing` doesn't appear in the legend if there are no missing values, `color_not_applicable` doesn't appear if `not_applicable` is set to `NULL`, and `color_non_member_state` doesn't appear if non-member states are not plotted (i.e., if `show_non_member_states` in `create_geometry()` is set to `FALSE`). 
 
-Here are two examples of how to create a color palette. The first example uses a linear color ramp, and the second example uses a divergant color ramp.
+Here are two examples of how to create a color palette. These maps only show data for Eurozone members, making use of the `not_applicable` argument. The first example uses a linear color ramp, and the second example uses a divergant color ramp.
 
 ```r
-# simulate data
 data <- simulate_data(
   min = 0,
   max = 1,
-  missing = "Germany"
+  missing = "Germany",
+  seed = 1357
 )
 
 # example 1 (using the default values for all other arguments)
@@ -335,11 +337,17 @@ map <- make_map(
   palette = create_palette(
     member_states = data$member_state,
     values = data$value,
+    not_applicable = c(
+      "Bulgaria", "Croatia", "Czech Rebpulic",
+      "Denmark", "Hungary", "Poland",
+      "Romania", "Sweden"
+    ),
     value_min = 0,
     value_max = 1,
-    count_colors = 4,
-    color_low = "#E74C3C",
-    color_high = "#3498DB"
+    count_colors = 8,
+    color_low = c(226, 240, 249),
+    color_high = c(53, 151, 219),
+    label_not_applicable = "Not a member of the Eurozone"
   ),
   theme = create_theme()
 )
@@ -348,21 +356,30 @@ map <- make_map(
 data <- simulate_data(
   min = -1,
   max = 1,
-  missing = "Germany"
+  missing = "Germany",
+  seed = 1357,
 )
 
 # example 2 (using the default values for all other arguments)
 map <- make_map(
-  geography = create_geography(),
+  geography = create_geography(
+    insets = c("Luxembourg", "Cyprus", "Malta")
+  ),
   palette = create_palette(
     member_states = data$member_state,
     values = data$value,
+    not_applicable = c(
+      "Bulgaria", "Croatia", "Czech Rebpulic",
+      "Denmark", "Hungary", "Poland",
+      "Romania", "Sweden"
+    ),
     value_min = -1,
     value_max = 1,
     count_colors = 8,
-    color_low = "#E74C3C",
-    color_high = "#3498DB",
-    color_mid = "#FFFFFF"
+    color_low = c(231, 76, 59),
+    color_high = c(53, 151, 219),
+    color_mid = c(255, 255, 255),
+    label_not_applicable = "Not a member of the Eurozone"
   ),
   theme = create_theme()
 )
@@ -385,7 +402,8 @@ Here are two examples of how to create a theme. The first example uses the defau
 # simulate data
 data <- simulate_data(
   min = -1,
-  max = 1
+  max = 1,
+  seed = 1357
 )
 
 # example 1 (using the default values for all other arguments)
@@ -397,9 +415,9 @@ map <- make_map(
     value_min = -1,
     value_max = 1,
     count_colors = 8,
-    color_low = "#E74C3C",
-    color_high = "#3498DB",
-    color_mid = "#FFFFFF"
+    color_low = c(231, 76, 59),
+    color_high = c(53, 151, 219),
+    color_mid = c(255, 255, 255),
   ),
   theme = create_theme()
 )
@@ -413,9 +431,9 @@ map <- make_map(
     value_min = -1,
     value_max = 1,
     count_colors = 8,
-    color_low = "#E74C3C",
-    color_high = "#3498DB",
-    color_mid = "#FFFFFF",
+    color_low = c(231, 76, 59),
+    color_high = c(53, 151, 219),
+    color_mid = c(255, 255, 255),
     color_non_member_state = c(0.9, 0.9, 0.9)
   ),
   theme = create_theme(
