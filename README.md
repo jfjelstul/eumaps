@@ -81,6 +81,44 @@ map <- make_map(
 
 The function `create_geometry()` creates the geography for a map made by `eumaps::make_map()`. It creates a object of type `eumaps.geography`, which you can pass to the `geography` argument of `make_maps()`. You can use `create_geography()` to set a variety of options that make it easy to make the map look exactly how you want.
 
+All the examples below use the following `palette` and `theme` objects.
+
+```r
+# simulate data
+data <- simulate_data(
+  min = -1, 
+  max = 1
+)
+
+# create palette
+palette <- create_palette(
+  member_states = data$member_state,
+  values = data$value,
+  value_min = -1,
+  value_max = 1,
+  count_colors = 8,
+  color_low = "#E74C3C",
+  color_high = "#3498DB",
+  color_mid = "#FFFFFF"
+)
+
+# create theme
+theme <- create_theme()
+```
+
+And each map is made using the following code:
+
+```r
+# make map
+map <- make_map(
+  geography = geography,
+  palette = palette,
+  theme = theme,
+)
+```
+
+The only thing that is changing is the `geography` object.
+
 ### Choosing member states
 
 `create_geography()` will automatically center the map on all countries that are member states on the date indicated by the argument `date`. This way, you never have to specify the bounds of the map, which can be complicated, depending on the map projection you want to use. You also don't have to know the accession dates of the member states. By default, `date` is set to today's date. You can use the optional argument `subset` to center the map on a subset of member states.
@@ -93,11 +131,35 @@ You can use `aspect_ratio` to specify the aspect ratio of the map. A value great
 
 The first example shows an aspect ratio of `0.8`, and the second shows an aspect ratio of `1.2`.
 
+```r
+# example 1 (using the default values for all other arguments)
+geography <- create_geography(
+  aspect_ratio = 0.8
+)
+
+# example 2 (using the default values for all other arguments)
+geography <- create_geography(
+  aspect_ratio = 1.2
+)
+```
+
 ### Zooming
 
 You can use `zoom` to choose a zoom factor. A value of `1` focuses the map tightly around the selected member states, and values less than `1` zoom out the map. The minimum value is `0.5`. The default is `0.9`. 
 
 The first example shows a zoom of `0.9`, and the second shows a zoom of `0.7`.
+
+```r
+# example 1 (using the default values for all other arguments)
+geography <- create_geography(
+  zoom = 0.9
+)
+
+# example 2 (using the default values for all other arguments)
+geography <- create_geography(
+  zoom = 0.7
+)
+```
 
 ### Showing non-member states
 
@@ -111,16 +173,52 @@ You can use `insets` to create insets for member states whose values would be ha
 
 The first example includes insets for Luxembourg and Malta, and the second includes insets for Luxembourg, Malta, and Cyprus.
 
+```r
+# example 1 (using the default values for all other arguments)
+geography <- create_geography(
+  insets = c("Luxembourg", "Malta")
+)
+
+# example 2 (using the default values for all other arguments)
+geography <- create_geography(
+  insets = c("Luxembourg", "Cyprus", "Malta")
+)
+```
+
 ### Map projection
 
 You can use `projection` to choose between 5 common map projections that are appropriate for Europe. You can run `list_projections()` to see the possible values. The default value is `lambert_azimuthal_equal_area` for the Lambert azimuthal equal-area projection (`EPSG:3035`). 
 
-The first example uses a Lambert azimuthal equal-area projection (`lambert_azimuthal_equal_area`), and the second uses a Mercator projection (`mercator`). 
+The first example uses a Lambert azimuthal equal-area projection, and the second uses a Mercator projection. 
+
+```r
+# example 1 (using the default values for all other arguments)
+geography <- create_geography(
+  projection = "lambert_azimuthal_equal_area"
+)
+
+# example 2 (using the default values for all other arguments)
+geography <- create_geography(
+  projection = "mercator"
+)
+```
 
 ### Resolution
 
 You can use `resolution` to choose between low or high resolution border data. The default value is `high` and the alternative is `low`. The map will take longer to render if you use the high resolution data. The function always uses high resolution border data for the insets.
 
 The first example uses the high resolution border data, and the second uses the low resolution data. 
+
+```r
+# example 1 (using the default values for all other arguments)
+geography <- create_geography(
+  resolution = "high"
+)
+
+# example 2 (using the default values for all other arguments)
+geography <- create_geography(
+  resolution = "low"
+)
+```
 
 
