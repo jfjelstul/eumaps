@@ -23,6 +23,7 @@
 #' @param missing String. Optional. A vector of member states names. The data
 #'   for these member states will be coded as `NA`. This is option is useful for
 #'   testing out color palettes. The default value is `NULL`.
+#' @param seed Numeric. Optional. The seed to use for generating the data.
 #'
 #' @examples
 #' # using the default values
@@ -37,9 +38,12 @@
 #' )
 #'
 #' @export
-simulate_data <- function(date = NULL, min = 0, max = 1, missing = NULL) {
+simulate_data <- function(date = NULL, min = 0, max = 1, missing = NULL, seed = NULL) {
   if (is.null(date)) {
     date <- Sys.Date()
+  }
+  if (!is.null(seed)) {
+    set.seed(seed)
   }
   data <- make_template(date)
   data$value <- runif(n = nrow(data), min = min, max = max)
