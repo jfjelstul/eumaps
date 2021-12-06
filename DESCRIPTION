@@ -1,0 +1,17 @@
+Package: eumaps
+Type: Package
+Title: Tools to make maps of the European Union
+Version: 0.1.0
+Authors@R: person(given = "Joshua",
+           family = "Fjelstul",
+           role = c("aut", "cre"),
+           email = "joshfjelstul@gmail.com",
+           comment = c(ORCID = "0000-0002-9494-260X"))
+Description: This package includes easy-to-use tools for making professional-quality choropleth maps of the European Union (EU). 
+URL: https://github.com/jfjelstul/eumaps
+Date: 2021-12-06
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
