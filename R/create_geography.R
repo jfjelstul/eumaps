@@ -166,6 +166,11 @@ create_geography <- function(
     bounding_box <- dimensions$bounding_box
   }
 
+  # if aspect ratio is not specified
+  if (is.null(aspect_ratio)) {
+    aspect_ratio <- (bounding_box$xmax - bounding_box$xmin) / (bounding_box$ymax - bounding_box$ymin)
+  }
+
   # clip geometry based on the bounding box
   geometry <- run_quietly(sf::st_crop(sf::st_buffer(geometry, 0), xmin = bounding_box$xmin, ymin = bounding_box$ymin, xmax = bounding_box$xmax, ymax = bounding_box$ymax))
   geometry <- dplyr::select(
