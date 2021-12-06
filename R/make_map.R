@@ -139,6 +139,7 @@ make_map <- function(geography, palette, theme, title = NULL) {
       legend.text = ggplot2::element_text(size = theme$size_legend_labels),
       legend.spacing.x = ggplot2::unit(theme$space_before_legend_labels, "pt"),
       legend.spacing.y = ggplot2::unit(theme$space_between_legend_keys, "pt"),
+      plot.background = ggplot2::element_rect(fill = "white", color = "white"),
       plot.margin = ggplot2::margin(t = theme$space_around_map, r = theme$space_around_map, b = theme$space_around_map, l = theme$space_around_map),
       plot.title = ggplot2::element_text(size = theme$title_text_size, margin = ggplot2::margin(b = theme$space_under_title)),
       panel.background = ggplot2::element_rect(size = theme$width_map_border, fill = NA, color = theme$color_map_border),
