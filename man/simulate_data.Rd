@@ -4,13 +4,19 @@
 \alias{simulate_data}
 \title{Simulate map data}
 \usage{
-simulate_data(date = NULL, missing = NULL)
+simulate_data(date = NULL, min = 0, max = 1, missing = NULL)
 }
 \arguments{
 \item{date}{String or date. Optional. If not \code{NULL}, data will only be
 simulated for countries that were member states on this date. If not
 \code{NULL}, today's date is used, and data will only be simulated for current
 member states. The default value is \code{NULL}.}
+
+\item{min}{Numeric. Required, has a default value. The minimum value to use
+for the uniform distribution. The default value is \code{0}.}
+
+\item{max}{Numeric. Required, has a default value. The maximum value to use
+for the uniform distribution. The default value is \code{1}.}
 
 \item{missing}{String. Optional. A vector of member states names. The data
 for these member states will be coded as \code{NA}. This is option is useful for
@@ -22,10 +28,10 @@ This function returns a \code{tibble} with 3 columns: \code{member_state_id},
 }
 \description{
 This function simulates data for a map of the European Union
-(EU) made by \code{eumaps::make_map()}. The data is drawn from a standard
-uniform distribution. It creates a tibble. You can pass the column
-\code{member_state} to the \code{member_states} argument of \code{create_palette()} and
-the column \code{value} to the \code{values} argument of \code{create_palette()}.
+(EU) made by \code{eumaps::make_map()}. The data is drawn from a uniform
+distribution. It creates a tibble. You can pass the column \code{member_state}
+to the \code{member_states} argument of \code{create_palette()} and the column
+\code{value} to the \code{values} argument of \code{create_palette()}.
 }
 \examples{
 # using the default values
@@ -34,6 +40,8 @@ data <- simulate_data()
 # using all options
 data <- simulate_data(
   date = "2015-01-01",
+  min = 0,
+  max = 1,
   missing = c("France", "Germany")
 )
 
