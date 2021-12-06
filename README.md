@@ -253,7 +253,7 @@ geography <- create_geography(
 
 ### Map projection
 
-You can use `projection` to choose between 5 common map projections that are appropriate for Europe. You can run `list_projections()` to see the possible values. The default value is `lambert_azimuthal_equal_area` for the Lambert azimuthal equal-area projection (`EPSG:3035`). 
+You can use `projection` to choose between 5 common map projections that are appropriate for Europe. You can run `list_projections()` to see all of the possible values. The default value is `lambert_azimuthal_equal_area`, for the Lambert azimuthal equal-area projection (`EPSG:3035`). This is the projection used by Eurostat. 
 
 The first example uses a Lambert azimuthal equal-area projection, and the second uses a Mercator projection. 
 
@@ -301,19 +301,23 @@ geography <- create_geography(
 
 The function `create_palette()` creates the color palette for a map made by `make_map()`. It creates a object of type `eumaps.geography`, which you can pass to the `palette` argument of `make_maps()`. An `eumaps.palette` object creates a mapping between a continuous variable and a color ramp with a fixed number of colors. It also defines the colors and labels to use for member states with missing data, member states where the data is not applicable, and non-member states. 
 
-An `eumaps.palette` object only defines the colors used for shading countries on the map. It does not define the background color (i.e., the color of the water), the color of country borders, or the color of the border around the map, These are defined using `create_theme()`, which returns an `eumaps.theme` object that you can pass to the `theme` argument of `make_map()`.
+Note that an `eumaps.palette` object only defines the colors used for shading countries on the map. It doesn't define the background color (i.e., the color of the water), the color of country borders, or the color of the border around the map, These are defined using `create_theme()`, which returns an `eumaps.theme` object that you can pass to the `theme` argument of `make_map()`.
 
-The examples below use the following `geography` and `theme` objects. Germany is coded `NA` to illustrate how missing values are treated. 
+`create_palette()` creates a mapping between a continuous variable and a color ramp with a fixed number of colors. First, you need to provide two vectors: a vector that contains member state names (using the argument `member_states`) and a vector that contains values corresponding to each member state to be used for shading the member states (using `values`). Member state names should not be repeated. You can run `list_member_states()` to get a list of valid member state names. 
 
-This function creates a mapping between a continuous variable and a color ramp with a fixed number of colors. To make a palette, you need to provide two vectors: a vector that contains member state names and a vector that contains values corresponding to each member state to be used for shading the member states. Member state names should not be repeated. You can run `list_member_states()` to get a list of valid member state names. The function will map the values you provide to colors. 
+You can also code certain member states as not applicable (using `not_applicable`). This is useful in many applications. For example, if you're making a map of the Eurozone, you may only want to plot data for Eurozone members (some of which could have missing data), but still want to visually differentiate between member states that are not members of the Eurozone and countries that are not EU member states. Here, the data would not be applicable for member states that are not members of the Eurozone.
 
-You also need to specify minimum and maximum data values (these values should be reasonably rounded, and all of the data points that you want to plot should fall within this range), a low color and a high color for the color ramp (there is also an optional middle color, so you can create a diverging color palette), and the number of colors in the color ramp (usually, for a choropleth map, you do not want to plot more than 10 colors). 
+Second, you need to specify minimum and maximum data values (`value_min` and `value_max`). These values should be rounded to sensible values, and all of the data points that you want to plot should fall within this range. The function asks you to specify these yourself, instead of calculating the minimum and maximum values in the data (provided via the `values` argument), because having non-rounded values as the limits of the color ramp doesn't look good. The bounds should either be the theoretical range of the variable you're plotting or rounded values close to the in-sample minimum and maximum values.
 
-The number of colors in the color ramp determines the number of bins that the data will be divided into. The number of bins is always the same as the number of colors. The break points between the bins (the number of break points is always 1 less than the number of colors/bins) will be evenly spaced between the minimum and maximum data values you provide. 
+Third, you need to specify a low color (`color_low`) and a high color (`color_high`) for the color ramp. You also have the option to specify a middle color (`color_mid`), which lets you to create a diverging color palette. You can speciify colors in an RGB format as a vector, like `c(255, 255, 255)`, or in a hex format as a string, like `"#FFFFFF"`. The leading `#` is optional. See the documentation for the `convert_color()` utility function for more details about how you can specify colors. 
 
-You can also use `create_palette()` to specify the colors to use for member states with missing data, for member states where the data is not applicable, and for non-member states, along with the labels to use for these three categories in the map legend. These three colors only appear in the legend when applicable. In other words, the color for missing values doesn't appear in the legend if there are no missing values, the color for member states where the data is not applicable states doesn't appear if the data is applicable to all member states, and the color for non-member states doesn't appear if non-member states are not plotted.
+Fourth, you need to specify the number of colors in the color ramp (`count_numbers`). There is a limit of 10 colors. Any more than this, and it can become hard to tell them apart, particularly for a linear color ramp. The number of colors in the color ramp determines the number of bins that the data will be divided into. The number of bins is always the same as the number of colors. The break points between the bins will be evenly spaced between the minimum and maximum data values you provide. There is always one fewer break points than the number of colors.
 
-The first example uses a linear color ramp, and the second example uses a divergant color ramp.
+You can also use `create_palette()` to specify the colors to use for member states with missing data (`color_missing`), for member states where the data is not applicable (`color_not_applicable`), and for non-member states (`color_non_member_state`), along with the labels to use for these three categories in the map legend (`label_missing`, `label_not_applicable`, and `label_non_member_state`). All of these arguments have sensible default values (i.e., shades of gray), so you don't have to specify them every time. 
+
+These three colors only appear in the legend when applicable. In other words, `color_missing` doesn't appear in the legend if there are no missing values, `color_not_applicable` doesn't appear if `not_applicable` is set to `NULL`, and `color_non_member_state` doesn't appear if non-member states are not plotted (i.e., if `show_non_member_states` in `create_geometry()` is set to `FALSE`). 
+
+Here are two examples of how to create a color palette. The first example uses a linear color ramp, and the second example uses a divergant color ramp.
 
 ```r
 # simulate data
@@ -373,9 +377,9 @@ map <- make_map(
 
 The function `create_theme()` creates the theme for a map made by `make_map()`. It creates a object of type `eumaps.geography`, which you can pass to the `theme` argument of `make_maps()`. An `eumaps.theme` object defines the aesthetics of the map, including the style of the map border, the country borders, the title, the legend, and any insets.
 
-See the documentation for more details on all available options. 
+See the documentation for details on all available options. 
 
-The first example uses the default options, and the second example uses custom options. 
+Here are two examples of how to create a theme. The first example uses the default options, and the second example uses custom options. 
 
 ```r
 # simulate data
