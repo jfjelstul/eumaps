@@ -5,9 +5,14 @@
 
 `eumaps` breaks down the process of making a map into three basic steps: (1) specifying the geography to plot, (2) specifying the color palette to use, and (3) specifying a theme that defines the aesthetics of the map.
 
-`eumaps` includes a wide array of intuitive customization options. And it’s based on `ggplot`, so the output is customizable. 
+`eumaps` includes a wide array of intuitive customization options. It returns a standard `ggplot` object so you can add labels or other layers. 
 
-The data for the country borders comes from Natural Earth, a public domain database.
+The data for the country borders comes from [Natural Earth](https://www.naturalearthdata.com), a popular public domain database. This package follows Eurostat in showing Northern Cyprus as part of Cyprus. For all other country borders, this package follows Natural Earth in showing current territorial control.
+
+<div>
+  <img src="https://github.com/jfjelstul/eumaps/blob/master/examples/main-1.png?raw=true" width="45%">
+  <img src="https://github.com/jfjelstul/eumaps/blob/master/examples/main-2.png?raw=true" width="45%">
+</div>
 
 ## Installation
 
