@@ -23,6 +23,8 @@ You can install the latest development version of the `eumaps` package from GitH
 devtools::install_github("jfjelstul/eumaps@0.1.0")
 ```
 
+**Important:** This package depends on `sf`, which requires `gdal`. Follow [these instructions](https://r-spatial.github.io/sf/) to install `gdal` and the `sf` package. 
+
 ## Citation
 
 If you use the `eumaps` package to make a map for a project or paper, please cite the package:
