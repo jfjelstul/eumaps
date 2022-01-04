@@ -48,7 +48,7 @@ If you notice an error in the data or a bug in the `R` package, please report it
 
 The main function of the `eumaps` package is `make_map()`. The `make_map()` function has three inputs: an object of the class `eumaps.geography` created by `create_geography()` that the specifies geography to plot, an object of class `eumap.palette` created by `create_palette()` that specifies the color palette to use, and an object of class `eumaps.theme` created by `create_theme()` that specifies the theme. You can also choose a title for your map using `title`.
 
-The `geography` input, which needs to be an object of class `eumaps.geography` created by `create_geography()`, specifies the geography to plot. The appropriate geography to plot is influenced by which countries are member states on the date of the data, whether the map should center on a subset of member states, the aspect ratio of the map, how zoomed out the map should be, whether the map should include non-member states, whether there should be insets for some member states, what projection the map should use, and whether the map should use high or low resolution border data. See the section below on creating the geography for more details. 
+The `geography` input, which needs to be an object of class `eumaps.geography` created by `create_geography()`, specifies the geography to plot. The appropriate geography to plot is influenced by which countries are member states on the date of the data, whether the map should center on a subset of member states, the aspect ratio of the map, how zoomed out the map should be, whether the map should include non-member states, whether there should be insets for some member states, and whether the map should use high or low resolution border data. See the section below on creating the geography for more details. 
 
 The `palette` input, which needs to be an object of class `eumaps.palette` created by `create_palette()`, specifies a mapping between a continuous variable and a color ramp with a fixed number of colors. It also specifies the colors and labels to use for member states with missing data, for member states where the data is not applicable, and for non-member states. See the section below on creating a color palette for more details.
 
@@ -131,7 +131,7 @@ The only thing that is changing is the `geography` object.
 
 ### Choosing member states
 
-`create_geography()` will automatically center the map on all countries that are member states on the date indicated by the argument `date`. This way, you never have to specify the bounds of the map, which can be complicated, depending on the map projection you want to use. You also don't have to know the accession dates of the member states. By default, `date` is set to today's date. When you use `date`, data is not plotted for countries that aren't member states on that date. You can use the optional argument `subset` to center the map on a subset of member states. Data is still plotted for member states that are not in the subset. 
+`create_geography()` will automatically center the map on all countries that are member states on the date indicated by the argument `date`. This way, you never have to specify the bounds of the map, which can be complicated. You also don't have to know the accession dates of the member states. By default, `date` is set to today's date. When you use `date`, data is not plotted for countries that aren't member states on that date. You can use the optional argument `subset` to center the map on a subset of member states. Data is still plotted for member states that are not in the subset. 
 
 The first example is centered on all current member states, the second is centered on all member states on `2000-01-01`, and the third is centered on all member states on `1960-01-01`, and the fourth is centered on a subset containing the original member states (France, Germany, Italy, Belgium, the Netherlands, and Luxembourg). The difference between the third and fourth examples is that, in the third example, data is plotted just for countries that are member states on `1960-01-01`, whereas in the fourth example, data is plotted for all current member states (because the default value of `date` is today's date), but the map is centered on a subset of them.
 
@@ -256,29 +256,6 @@ geography <- create_geography(
 <div>
   <img src="https://github.com/jfjelstul/eumaps/blob/master/examples/insets-1.png?raw=true" width="45%">
   <img src="https://github.com/jfjelstul/eumaps/blob/master/examples/insets-2.png?raw=true" width="45%">
-</div>
-
-### Map projection
-
-You can use `projection` to choose between 5 common map projections that are appropriate for Europe. You can run `list_projections()` to see all of the possible values. The default value is `lambert_azimuthal_equal_area`, for the Lambert azimuthal equal-area projection (`EPSG:3035`). This is the projection used by Eurostat. 
-
-The first example uses a Lambert azimuthal equal-area projection, and the second uses a Mercator projection. 
-
-```r
-# example 1 (using the default values for all other arguments)
-geography <- create_geography(
-  projection = "lambert_azimuthal_equal_area"
-)
-
-# example 2 (using the default values for all other arguments)
-geography <- create_geography(
-  projection = "mercator"
-)
-```
-
-<div>
-  <img src="https://github.com/jfjelstul/eumaps/blob/master/examples/projection-1.png?raw=true" width="45%">
-  <img src="https://github.com/jfjelstul/eumaps/blob/master/examples/projection-2.png?raw=true" width="45%">
 </div>
 
 ### Resolution
