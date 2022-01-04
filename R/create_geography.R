@@ -11,10 +11,9 @@
 #'   `create_geography()` will automatically center the map on all countries
 #'   that are member states on the date indicated by the argument `date`. This
 #'   way, you never have to specify the bounds of the map, which can be
-#'   complicated, depending on the map projection you want to use. You also
-#'   don't have to know the accession dates of the member states. By default,
-#'   `date` is set to today's date. You can use the optional argument `subset`
-#'   to center the map on a subset of member states.
+#'   complicated. You also don't have to know the accession dates of the member
+#'   states. By default, `date` is set to today's date. You can use the optional
+#'   argument `subset` to center the map on a subset of member states.
 #'
 #'   You can use `create_geography()` to set a variety of other options that
 #'   make it easy to make the map look exactly how you want.
@@ -38,11 +37,7 @@
 #'   for Luxembourg, Malta, and Cyprus. The insets will appear in the top right
 #'   corner of the map in the order given by the vector.
 #'
-#'   Fifth, you can use `projection` to choose between 5 common map projections
-#'   that are appropriate for Europe. You can run `list_projections()` to see
-#'   the possible values.
-#'
-#'   Finally, you can use `resolution` to choose between low or high resolution
+#'   Fifth, you can use `resolution` to choose between low or high resolution
 #'   border data. The default value is `high` and the alternative is `low`. The
 #'   map will take longer to render if you use the high resolution data. The
 #'   function always uses high resolution border data for the insets.
@@ -71,11 +66,6 @@
 #'   for. Possible values include `Luxembourg`, `Cyprus`, and `Malta`. Other
 #'   countries will be ignored. If `NULL`, no insets are created. The default
 #'   value is `NULL`.
-#' @param projection String. Required, and has a default value. The map
-#'   projection to use. The possible values are `equidistant_conic`,
-#'   `lambert_conformal_conic`, `albers_equal_area_conic`,
-#'   `lambert_azimuthal_equal_area`, and `mercator`. The default value is
-#'   `lambert_azimuthal_equal_area`.
 #' @param resolution String. Required, and has a default value. The resolution
 #'   to use for the border data. The possible values are `high` and `low`. The
 #'   default is `high`.
@@ -92,7 +82,6 @@
 #'   zoom = 0.9,
 #'   show_non_member_states = TRUE,
 #'   insets = NULL,
-#'   projection = "lambert_azimuthal_equal_area",
 #'   resolution = "high"
 #' )
 #'
@@ -104,7 +93,6 @@ create_geography <- function(
   zoom = 0.9,
   show_non_member_states = TRUE,
   insets = NULL,
-  projection = "lambert_azimuthal_equal_area",
   resolution = "high"
 ) {
 
@@ -114,14 +102,15 @@ create_geography <- function(
   }
 
   # convert the projection string into an ESRI or EPSG code
-  projection <- switch(
-    projection,
-    "equidistant_conic" = "ESRI:102031",
-    "lambert_conformal_conic" = "EPSG:3034",
-    "albers_equal_area_conic" = "ESRI:102013",
-    "lambert_azimuthal_equal_area" = "EPSG:3035",
-    "mercator" = "EPSG:3395"
-  )
+  projection <- "EPSG:3035"
+  # projection <- switch(
+  #   projection,
+  #   "equidistant_conic" = "ESRI:102031",
+  #   "lambert_conformal_conic" = "EPSG:3034",
+  #   "albers_equal_area_conic" = "ESRI:102013",
+  #   "lambert_azimuthal_equal_area" = "EPSG:3035",
+  #   "mercator" = "EPSG:3395"
+  # )
 
   # select geographic data
   if(resolution == "high") {

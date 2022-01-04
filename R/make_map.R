@@ -47,9 +47,8 @@
 #'   are member states on the date of the data, whether the map should center on
 #'   a subset of member states, the aspect ratio of the map, how zoomed out the
 #'   map should be, whether the map should include non-member states, whether
-#'   there should be insets for some member states, what projection the map
-#'   should use, and whether the map should use high or low resolution border
-#'   data.
+#'   there should be insets for some member states, and whether the map should
+#'   use high or low resolution border data.
 #'
 #'   The `palette` input, which needs to be an object of class `eumaps.palette`
 #'   created by `create_palette()`, specifies a mapping between a continuous
